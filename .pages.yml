@@ -1,0 +1,11 @@
+media:
+  source: public/images
+
+collections:
+  posts:
+    location: src/content/posts
+    name: پست‌ها
+    schema:
+      title: عنوان
+      date: تاریخ
+      body: متن
