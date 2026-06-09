@@ -26,7 +26,7 @@ const { language, textDirection } = I18N;
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang="fa" dir="rtl" class="2xl:text-[20px]">
   <head>
     <CommonMeta />
     <Favicons />
@@ -37,6 +37,10 @@ const { language, textDirection } = I18N;
     <Analytics />
 
     <link rel="preconnect" href="https://images.unsplash.com" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <style>
+     body, p, h1, h2, h3, h4, h5, h6, a, li, span, div { font-family: 'Vazirmatn', sans-serif; }
+    </style>
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
