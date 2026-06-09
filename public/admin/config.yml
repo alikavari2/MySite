@@ -1,7 +1,11 @@
 backend:
   name: github
-  repo: alikavari2/MySite
+  repo: alikavari2/MySite   # نام کاربری/مخزن خودتان را وارد کنید
   branch: main
+  base_url: https://alikavari.ir
+  auth_endpoint: /auth/github
+
+local_backend: false
 
 media_folder: public/images
 public_folder: /images
