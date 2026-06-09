@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: alikavari2/MySite   # نام کاربری/مخزن خودتان را وارد کنید
+  repo: alikavari2/MySite
   branch: main
   base_url: https://alikavari.ir
   auth_endpoint: /auth/github
@@ -17,6 +17,6 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "عنوان", name: "title", widget: "string"}
-      - {label: "تاریخ", name: "date", widget: "datetime"}
-      - {label: "متن", name: "body", widget: "markdown"}
+      - { label: "عنوان", name: "title", widget: "string" }
+      - { label: "تاریخ", name: "date", widget: "datetime" }
+      - { label: "متن", name: "body", widget: "markdown" }
