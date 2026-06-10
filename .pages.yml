@@ -36,12 +36,10 @@ content:
         label: خلاصه
         type: text
       - name: tags
-        label: برچسب‌ها
-        type: list
+        label: برچسب‌ها (با ویرگول انگلیسی جدا کنید)
+        type: string
         required: false
-        default: []
-        fields:
-          - type: string
+        default: ""
       - name: body
         label: متن
         type: markdown
