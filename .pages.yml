@@ -20,7 +20,7 @@ content:
       - name: image
         label: تصویر شاخص
         type: image
-      - name: description
+      - name: excerpt
         label: خلاصه
         type: text
       - name: body
