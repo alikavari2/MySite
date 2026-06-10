@@ -1,12 +1,15 @@
+# تنظیمات رسانه (آپلود عکس)
 media:
   input: public/images
   output: /images
 
+# مجموعه‌های محتوا
 content:
+  # ۱. وبلاگ (نوشته‌ها)
   - name: blog
     label: نوشته‌ها
     type: collection
-    path: src/content/blog
+    path: src/data/post
     format: yaml-frontmatter
     fields:
       - name: title
@@ -17,12 +20,96 @@ content:
         label: تاریخ انتشار
         type: date
         default: now
+        required: true
+      - name: author
+        label: نویسنده
+        type: string
+        default: علی کاویاری
+      - name: category
+        label: دسته‌بندی
+        type: string
+        default: عمومی
       - name: image
         label: تصویر شاخص
         type: image
       - name: excerpt
         label: خلاصه
         type: text
+      - name: tags
+        label: برچسب‌ها
+        type: list
+        fields:
+          - type: string
       - name: body
         label: متن
         type: markdown
+
+  # ۲. تنظیمات اصلی سایت (فایل config.yaml)
+  - name: settings
+    label: تنظیمات سایت
+    type: file
+    path: src/config.yaml
+    format: yaml
+    fields:
+      - name: site
+        label: اطلاعات سایت
+        type: object
+        fields:
+          - name: name
+            label: نام سایت
+            type: string
+          - name: site
+            label: آدرس سایت
+            type: string
+          - name: base
+            label: مسیر پایه
+            type: string
+      - name: metadata
+        label: متادیتا (SEO)
+        type: object
+        fields:
+          - name: title
+            label: عنوان
+            type: object
+            fields:
+              - name: default
+                label: عنوان پیش‌فرض
+                type: string
+              - name: template
+                label: قالب عنوان
+                type: string
+          - name: description
+            label: توضیحات
+            type: text
+      - name: i18n
+        label: زبان و جهت
+        type: object
+        fields:
+          - name: language
+            label: زبان
+            type: string
+          - name: textDirection
+            label: جهت متن (rtl/ltr)
+            type: string
+      - name: ui
+        label: ظاهر
+        type: object
+        fields:
+          - name: theme
+            label: تم
+            type: string
+      - name: analytics
+        label: آنالیتیکس
+        type: object
+        fields:
+          - name: vendors
+            label: سرویس‌ها
+            type: object
+            fields:
+              - name: googleAnalytics
+                label: گوگل آنالیتیکس
+                type: object
+                fields:
+                  - name: id
+                    label: شناسه
+                    type: string
