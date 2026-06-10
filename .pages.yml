@@ -38,6 +38,8 @@ content:
       - name: tags
         label: برچسب‌ها
         type: list
+        required: false
+        default: []
         fields:
           - type: string
       - name: body
