@@ -1,0 +1,28 @@
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: blog
+    label: نوشته‌ها
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: عنوان
+        type: string
+        required: true
+      - name: publishDate
+        label: تاریخ انتشار
+        type: date
+        default: now
+      - name: image
+        label: تصویر شاخص
+        type: image
+      - name: description
+        label: خلاصه
+        type: text
+      - name: body
+        label: متن
+        type: markdown
