@@ -12,7 +12,7 @@ function toJalali(date: Date): { year: number; month: number; day: number } {
   const jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
   
   const gy2 = gm > 2 ? gy + 1 : gy;
-  const days = 355666 + (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) + gd;
+  let days = 355666 + (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) + gd;
   
   for (let i = 0; i < gm - 1; ++i) {
     days += gDaysInMonth[i];
@@ -25,8 +25,8 @@ function toJalali(date: Date): { year: number; month: number; day: number } {
   days -= 492268; // فاصلهٔ روزشمار میلادی و شمسی
   
   let jy = 1;
-  while (days >= (jy === 1 && 366 || 365)) {
-    days -= (jy === 1 && 366 || 365);
+  while (days >= (jy === 1 ? 366 : 365)) {
+    days -= (jy === 1 ? 366 : 365);
     jy++;
   }
   
