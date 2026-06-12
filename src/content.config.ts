@@ -3,6 +3,16 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
+// نگاشت اسلاگ انگلیسی به نام فارسی دسته‌بندی‌ها
+const categoryMap: Record<string, string> = {
+  physics: 'فیزیک',
+  chemistry: 'شیمی',
+  biology: 'زیست‌شناسی',
+  'earth-astronomy': 'زمین و نجوم',
+  'computer-science': 'علوم کامپیوتر',
+  metaphysics: 'علوم فرامادی',
+};
+
 const metadataDefinition = () =>
   z
     .object({
@@ -59,7 +69,20 @@ const postCollection = defineCollection({
     excerpt: z.string().optional(),
     image: z.string().optional(),
 
-    category: z.string().optional(),
+    // تبدیل category از رشته به شیء دارای slug و title فارسی
+    category: z.preprocess(
+      (val) => {
+        if (typeof val === 'string') {
+          return { slug: val, title: categoryMap[val] || val };
+        }
+        return val; // اگر از قبل شیء باشد، دست‌نخورده باقی می‌ماند
+      },
+      z.object({
+        slug: z.string(),
+        title: z.string(),
+      }).optional()
+    ),
+
     tags: z.preprocess(
       (val) => (typeof val === 'string' ? val.split(',').map((s) => s.trim()).filter(Boolean) : val),
       z.array(z.string()).optional()
