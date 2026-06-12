@@ -3,57 +3,29 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
-// نگاشت اسلاگ انگلیسی به نام فارسی دسته‌بندی‌ها
-const categoryMap: Record<string, string> = {
-  physics: 'فیزیک',
-  chemistry: 'شیمی',
-  biology: 'زیست‌شناسی',
-  'earth-astronomy': 'زمین و نجوم',
-  'computer-science': 'علوم کامپیوتر',
-  metaphysics: 'علوم فرامادی',
-};
-
 const metadataDefinition = () =>
   z
     .object({
       title: z.string().optional(),
       ignoreTitleTemplate: z.boolean().optional(),
-
       canonical: z.url().optional(),
-
       robots: z
-        .object({
-          index: z.boolean().optional(),
-          follow: z.boolean().optional(),
-        })
+        .object({ index: z.boolean().optional(), follow: z.boolean().optional() })
         .optional(),
-
       description: z.string().optional(),
-
       openGraph: z
         .object({
           url: z.string().optional(),
           siteName: z.string().optional(),
           images: z
-            .array(
-              z.object({
-                url: z.string(),
-                width: z.number().optional(),
-                height: z.number().optional(),
-              })
-            )
+            .array(z.object({ url: z.string(), width: z.number().optional(), height: z.number().optional() }))
             .optional(),
           locale: z.string().optional(),
           type: z.string().optional(),
         })
         .optional(),
-
       twitter: z
-        .object({
-          handle: z.string().optional(),
-          site: z.string().optional(),
-          cardType: z.string().optional(),
-        })
+        .object({ handle: z.string().optional(), site: z.string().optional(), cardType: z.string().optional() })
         .optional(),
     })
     .optional();
@@ -64,35 +36,17 @@ const postCollection = defineCollection({
     publishDate: z.date().optional(),
     updateDate: z.date().optional(),
     draft: z.boolean().optional(),
-
     title: z.string(),
     excerpt: z.string().optional(),
     image: z.string().optional(),
-
-    // تبدیل category از رشته به شیء دارای slug و title فارسی
-    category: z.preprocess(
-      (val) => {
-        if (typeof val === 'string') {
-          return { slug: val, title: categoryMap[val] || val };
-        }
-        return val; // اگر از قبل شیء باشد، دست‌نخورده باقی می‌ماند
-      },
-      z.object({
-        slug: z.string(),
-        title: z.string(),
-      }).optional()
-    ),
-
+    category: z.string().optional(),
     tags: z.preprocess(
       (val) => (typeof val === 'string' ? val.split(',').map((s) => s.trim()).filter(Boolean) : val),
       z.array(z.string()).optional()
     ),
     author: z.string().optional(),
-
     metadata: metadataDefinition(),
   }),
 });
 
-export const collections = {
-  post: postCollection,
-};
+export const collections = { post: postCollection };
