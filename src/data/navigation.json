@@ -2,7 +2,7 @@
   "headerData": {
     "links": [
       {
-        "text": "Homes",
+        "text": "خانه",
         "links": [
           { "text": "SaaS", "href": "/homes/saas" },
           { "text": "Startup", "href": "/homes/startup" },
