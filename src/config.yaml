@@ -1,59 +1,72 @@
 site:
   name: 'علوم تجربی'
-  site: https://astrowind.vercel.app
-  base: /
+  site: 'https://alikavari.ir'
+  base: '/'
   trailingSlash: false
+
   googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
+
+# Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: "%s — AstroWind"
-  description: 🚀 Suitable for Startups, Small Business, Sass Websites,
-    Professional Portfolios, Marketing Websites, Landing Pages & Blogs.
+    default: 'علوم تجربی'
+    template: '%s — علوم تجربی'
+  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
-    images: |-
-      url: ~/assets/images/default.png
-
-      width: 1200
-
-      height: 628
+    site_name: 'علوم تجربی'
+    images:
+      - url: '~/assets/images/default.png'
+        width: 1200
+        height: 628
     type: website
   twitter:
-    handle: "@arthelokyo"
-    site: "@arthelokyo"
+    handle: '@arthelokyo'
+    site: '@arthelokyo'
     cardType: summary_large_image
+
 i18n:
   language: en
   textDirection: ltr
+
 apps:
   blog:
     isEnabled: true
     postsPerPage: 6
+
     post:
       isEnabled: true
-      permalink: /%slug%
+      permalink: '/%slug%'
       robots:
         index: true
+
     list:
       isEnabled: true
-      pathname: blog
+      pathname: 'blog'
       robots:
         index: true
+
     category:
       isEnabled: true
-      pathname: category
+      pathname: 'category'
       robots:
         index: true
+
     tag:
       isEnabled: true
-      pathname: tag
+      pathname: 'tag'
       robots:
         index: false
+
     isRelatedPostsEnabled: true
     relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null
+
 ui:
-  theme: system
+  theme: 'system'
