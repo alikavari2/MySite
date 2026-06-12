@@ -1,57 +1,23 @@
 import { I18N } from 'astrowind:config';
 
-// تابع تبدیل تاریخ میلادی به شمسی (بدون کتابخانهٔ اضافی)
-function toJalali(date: Date): { year: number; month: number; day: number } {
-  const d = new Date(date.getTime());
-  d.setHours(12, 0, 0, 0); // جلوگیری از تغییر روز در مناطق زمانی
-  const gy = d.getFullYear();
-  const gm = d.getMonth() + 1;
-  const gd = d.getDate();
-  
-  const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
-  
-  const gy2 = gm > 2 ? gy + 1 : gy;
-  let days = 355666 + (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) + gd;
-  
-  for (let i = 0; i < gm - 1; ++i) {
-    days += gDaysInMonth[i];
-  }
-  
-  if (gm > 2 && ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0))) {
-    days++;
-  }
-  
-  days -= 492268; // فاصلهٔ روزشمار میلادی و شمسی
-  
-  let jy = 1;
-  while (days >= (jy === 1 ? 366 : 365)) {
-    days -= (jy === 1 ? 366 : 365);
-    jy++;
-  }
-  
-  let jm = 0;
-  while (days >= jDaysInMonth[jm]) {
-    days -= jDaysInMonth[jm];
-    jm++;
-  }
-  
-  return {
-    year: jy,
-    month: jm + 1,
-    day: days + 1
-  };
-}
-
-const persianMonths = [
-  'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
-  'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
-];
-
+// نمایش تاریخ به صورت شمسی با استفاده از قابلیت داخلی
 export const getFormattedDate = (date: Date): string => {
   if (!date) return '';
-  const j = toJalali(date);
-  return `${j.day} ${persianMonths[j.month - 1]} ${j.year}`;
+  try {
+    return new Intl.DateTimeFormat('fa-IR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      calendar: 'persian'
+    }).format(date);
+  } catch {
+    // در صورت پشتیبانی نکردن، تاریخ میلادی را با نام ماه‌های فارسی نشان بده
+    return new Intl.DateTimeFormat('fa-IR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(date);
+  }
 };
 
 export const trim = (str = '', ch?: string) => {
