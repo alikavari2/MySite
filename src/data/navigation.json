@@ -5,7 +5,6 @@
         "text": "خانه",
         "href": "/"
       },
-     
       {
         "text": "موضوعات",
         "links": [
@@ -34,8 +33,7 @@
         "title": "لینک‌های مفید",
         "links": [
           { "text": "دربارهٔ من", "href": "/about" },
-          { "text": "تماس با من", "href": "/contact" },
-         
+          { "text": "تماس با من", "href": "/contact" }
         ]
       }
     ],
