@@ -21,11 +21,18 @@ content:
       - name: author
         label: نویسنده
         type: string
-        default: علی کاویاری
+        default: علی کواری
       - name: category
         label: دسته‌بندی
-        type: string
-        default: عمومی
+        type: select
+        default: biology
+        options:
+          - { value: physics, label: فیزیک }
+          - { value: chemistry, label: شیمی }
+          - { value: biology, label: زیست‌شناسی }
+          - { value: earth-astronomy, label: زمین و نجوم }
+          - { value: computer-science, label: علوم کامپیوتر }
+          - { value: metaphysics, label: علوم فرامادی }
       - name: image
         label: تصویر شاخص
         type: image
