@@ -3,63 +3,56 @@ site:
   site: 'https://alikavari.ir'
   base: '/'
   trailingSlash: false
+  googleSiteVerificationId: false
 
-  googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
-
-# Default SEO metadata
 metadata:
   title:
-    default: 'علوم تجربی'
-    template: '%s — علوم تجربی'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: 'سایت شخصی علی کواری'
+    template: '%s — علی کواری'
+  description: 'آزمایشگاه دیجیتال علوم تجربی، فیزیک، شیمی، زیست، نجوم و رایانه'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: 'علوم تجربی'
+    site_name: 'سایت شخصی علی کواری'
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: ''
+    site: ''
     cardType: summary_large_image
 
 i18n:
-  language: en
-  textDirection: ltr
+  language: fa
+  textDirection: rtl
 
 apps:
   blog:
     isEnabled: true
     postsPerPage: 6
-
     post:
       isEnabled: true
-      permalink: '/%slug%'
+      permalink: '/blog/%slug%'
       robots:
         index: true
-
     list:
       isEnabled: true
       pathname: 'blog'
       robots:
         index: true
-
     category:
       isEnabled: true
       pathname: 'category'
       robots:
         index: true
-
     tag:
       isEnabled: true
       pathname: 'tag'
       robots:
         index: false
-
     isRelatedPostsEnabled: true
     relatedPostsCount: 4
 
@@ -68,5 +61,5 @@ analytics:
     googleAnalytics:
       id: null
 
- ui:
+ui:
   theme: 'dark'
