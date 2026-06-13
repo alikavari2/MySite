@@ -5,4 +5,4 @@ author: علی کواری
 category: earth-astronomy
 image: /images/Screenshot 2024-12-13 110629-2.png
 ---
-بررسی اولیه
+تست زمین
