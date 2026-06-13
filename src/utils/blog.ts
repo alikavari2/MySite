@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import type { Post, Taxonomy } from '~/types';
 import { APP_BLOG } from 'astrowind:config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
+import { categoryMap } from '~/data/categoryMap';
 
 const generatePermalink = async ({
   id,
@@ -57,14 +58,14 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     metadata = {},
   } = data;
 
-  const slug = cleanSlug(id); // cleanSlug(rawSlug.split('/').pop());
+  const slug = cleanSlug(id);
   const publishDate = new Date(rawPublishDate);
   const updateDate = rawUpdateDate ? new Date(rawUpdateDate) : undefined;
 
   const category = rawCategory
     ? {
         slug: cleanSlug(rawCategory),
-        title: rawCategory,
+        title: categoryMap[rawCategory] || rawCategory,
       }
     : undefined;
 
@@ -94,7 +95,6 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     metadata,
 
     Content: Content,
-    // or 'content' in case you consume from API
 
     readingTime: remarkPluginFrontmatter?.readingTime,
   };
@@ -113,7 +113,6 @@ const load = async function (): Promise<Array<Post>> {
 
 let _posts: Array<Post>;
 
-/** */
 export const isBlogEnabled = APP_BLOG.isEnabled;
 export const isRelatedPostsEnabled = APP_BLOG.isRelatedPostsEnabled;
 export const isBlogListRouteEnabled = APP_BLOG.list.isEnabled;
@@ -128,21 +127,16 @@ export const blogTagRobots = APP_BLOG.tag.robots;
 
 export const blogPostsPerPage = APP_BLOG?.postsPerPage;
 
-/** */
 export const fetchPosts = async (): Promise<Array<Post>> => {
   if (!_posts) {
     _posts = await load();
   }
-
   return _posts;
 };
 
-/** */
 export const findPostsBySlugs = async (slugs: Array<string>): Promise<Array<Post>> => {
   if (!Array.isArray(slugs)) return [];
-
   const posts = await fetchPosts();
-
   return slugs.reduce(function (r: Array<Post>, slug: string) {
     posts.some(function (post: Post) {
       return slug === post.slug && r.push(post);
@@ -151,12 +145,9 @@ export const findPostsBySlugs = async (slugs: Array<string>): Promise<Array<Post
   }, []);
 };
 
-/** */
 export const findPostsByIds = async (ids: Array<string>): Promise<Array<Post>> => {
   if (!Array.isArray(ids)) return [];
-
   const posts = await fetchPosts();
-
   return ids.reduce(function (r: Array<Post>, id: string) {
     posts.some(function (post: Post) {
       return id === post.id && r.push(post);
@@ -165,15 +156,12 @@ export const findPostsByIds = async (ids: Array<string>): Promise<Array<Post>> =
   }, []);
 };
 
-/** */
 export const findLatestPosts = async ({ count }: { count?: number }): Promise<Array<Post>> => {
   const _count = count || 4;
   const posts = await fetchPosts();
-
   return posts ? posts.slice(0, _count) : [];
 };
 
-/** */
 export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateFunction }) => {
   if (!isBlogEnabled || !isBlogListRouteEnabled) return [];
   return paginate(await fetchPosts(), {
@@ -182,7 +170,6 @@ export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateF
   });
 };
 
-/** */
 export const getStaticPathsBlogPost = async () => {
   if (!isBlogEnabled || !isBlogPostRouteEnabled) return [];
   return (await fetchPosts()).flatMap((post) => ({
@@ -193,10 +180,8 @@ export const getStaticPathsBlogPost = async () => {
   }));
 };
 
-/** */
 export const getStaticPathsBlogCategory = async ({ paginate }: { paginate: PaginateFunction }) => {
   if (!isBlogEnabled || !isBlogCategoryRouteEnabled) return [];
-
   const posts = await fetchPosts();
   const categories: Record<string, Taxonomy> = {};
   posts.map((post) => {
@@ -217,10 +202,8 @@ export const getStaticPathsBlogCategory = async ({ paginate }: { paginate: Pagin
   );
 };
 
-/** */
 export const getStaticPathsBlogTag = async ({ paginate }: { paginate: PaginateFunction }) => {
   if (!isBlogEnabled || !isBlogTagRouteEnabled) return [];
-
   const posts = await fetchPosts();
   const tags: Record<string, Taxonomy> = {};
   posts.map((post) => {
@@ -243,7 +226,6 @@ export const getStaticPathsBlogTag = async ({ paginate }: { paginate: PaginateFu
   );
 };
 
-/** */
 export async function getRelatedPosts(originalPost: Post, maxResults: number = 4): Promise<Post[]> {
   const allPosts = await fetchPosts();
   const originalTagsSet = new Set(originalPost.tags ? originalPost.tags.map((tag) => tag.slug) : []);
