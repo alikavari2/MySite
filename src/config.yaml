@@ -68,5 +68,5 @@ analytics:
     googleAnalytics:
       id: null
 
-ui:
-  theme: 'system'
+ ui:
+  theme: 'dark'
