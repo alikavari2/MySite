@@ -3,6 +3,7 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
+import { Icon } from 'astro-icon/components';
 
 import { headerData, footerData } from '~/navigation';
 
@@ -22,6 +23,15 @@ const { metadata } = Astro.props;
   <slot name="header">
     <Header {...headerData} isSticky showRssFeed showToggleTheme />
   </slot>
+
+  <!-- دکمهٔ بازگشت اضافه‌شده -->
+  <div class="mx-auto px-6 sm:px-6 max-w-3xl pt-4">
+    <a href="javascript:history.back()" class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition">
+      <Icon name="tabler:chevron-right" class="w-5 h-5 ml-1 -mr-1.5" />
+      بازگشت
+    </a>
+  </div>
+
   <main>
     <slot />
   </main>
