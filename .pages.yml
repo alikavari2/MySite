@@ -22,8 +22,12 @@ content:
         label: نویسنده
         type: string
         default: علی کواری
+      - name: category_help
+        label: "🔹 دسته‌بندی‌های مجاز (کپی کنید): physics, chemistry, biology, earth-astronomy, computer-science, metaphysics"
+        type: string
+        default: "physics, chemistry, biology, earth-astronomy, computer-science, metaphysics"
       - name: category
-        label: "دسته‌بندی (مجاز: physics, chemistry, biology, earth-astronomy, computer-science, metaphysics)"
+        label: "دسته‌بندی (یکی از موارد بالا را اینجا بچسبانید)"
         type: string
         default: biology
       - name: image
