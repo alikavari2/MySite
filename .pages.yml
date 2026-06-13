@@ -23,17 +23,9 @@ content:
         type: string
         default: علی کواری
       - name: category
-        label: دسته‌بندی
+        label: "دسته‌بندی (مجاز: physics, chemistry, biology, earth-astronomy, computer-science, metaphysics)"
         type: string
         default: biology
-        widget: radio
-        options:
-          - { value: physics, label: "⚛️ فیزیک" }
-          - { value: chemistry, label: "🧪 شیمی" }
-          - { value: biology, label: "🧬 زیست‌شناسی" }
-          - { value: earth-astronomy, label: "🌍 زمین و نجوم" }
-          - { value: computer-science, label: "💻 علوم کامپیوتر" }
-          - { value: metaphysics, label: "🔮 علوم فرامادی" }
       - name: image
         label: تصویر شاخص
         type: image
