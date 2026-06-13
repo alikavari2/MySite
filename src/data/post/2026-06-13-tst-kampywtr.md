@@ -1,5 +1,5 @@
 ---
-title: تست کامپیوتر
+title: تست زمین
 publishDate: 2026-06-13
 author: علی کواری
 category: earth-astronomy
