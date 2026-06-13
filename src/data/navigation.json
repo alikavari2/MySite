@@ -35,7 +35,7 @@
         "links": [
           { "text": "دربارهٔ من", "href": "/about" },
           { "text": "تماس با من", "href": "/contact" },
-          { "text": "وبلاگ", "href": "/blog" }
+         
         ]
       }
     ],
