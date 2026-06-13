@@ -23,9 +23,9 @@ content:
         type: string
         default: علی کواری
       - name: category_help
-        label: "🔹 دسته‌بندی‌های مجاز (کپی کنید): physics, chemistry, biology, earth-astronomy, computer-science, metaphysics"
-        type: string
-        default: "physics, chemistry, biology, earth-astronomy, computer-science, metaphysics"
+        label: "💡"
+        type: text
+        default: "physics → فیزیک | chemistry → شیمی | biology → زیست‌شناسی | earth-astronomy → زمین و نجوم | computer-science → علوم کامپیوتر | metaphysics → علوم فرامادی"
       - name: category
         label: "دسته‌بندی (یکی از موارد بالا را اینجا بچسبانید)"
         type: string
