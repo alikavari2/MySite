@@ -9,4 +9,4 @@ category: computer-science
 image: /images/Screenshot 2025-11-27 200501.png
 ---
 برررسی متن یبیظلیبل سلقلطیلیلطسقلیللسلی قیفلیقلیل یقلا یللیبایایایایایایایذ  لازالییال
-<img src="public/images/Test.png" alt="2توضیح" style="max-width:100%; border-radius:8px;">
+<img src="public/images/Test.png" alt="3توضیح" style="max-width:100%; border-radius:8px;">
