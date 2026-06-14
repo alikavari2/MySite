@@ -31,8 +31,8 @@ content:
         type: string
         default: biology
       - name: image
-        label: تصویر شاخص
-        type: image
+        label: "🖼️ تصویر شاخص (آدرس مستقیم عکس را وارد کنید)"
+        type: string
       - name: excerpt
         label: خلاصه
         type: text
