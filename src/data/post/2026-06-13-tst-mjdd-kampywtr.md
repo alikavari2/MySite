@@ -9,4 +9,4 @@ category: computer-science
 image: /images/Screenshot 2025-11-27 200501.png
 ---
 برررسی متن یبیظلیبل سلقلطیلیلطسقلیللسلی قیفلیقلیل یقلا یللیبایایایایایایایذ  لازالییال
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/4RCBBHN5/1.png" alt="1" border="0"></a>
+<img src="https://www.alikavari.ir/images/bozi.png" alt="توضیح" style="max-width:100%; border-radius:8px;">
