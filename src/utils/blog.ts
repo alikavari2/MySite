@@ -5,7 +5,6 @@ import type { Post, Taxonomy } from '~/types';
 import { APP_BLOG } from 'astrowind:config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
 
-// نگاشت مستقیم (بدون نیاز به فایل خارجی)
 const categoryMap: Record<string, string> = {
   physics: 'فیزیک',
   chemistry: 'شیمی',
