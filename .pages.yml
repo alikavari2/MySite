@@ -2,7 +2,7 @@ media:
   input: public/images
   output: /images
 
-collections:
+content:
   - name: blog
     label: نوشته‌ها
     type: collection
