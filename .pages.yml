@@ -18,36 +18,45 @@ content:
         required: true
       - name: publishDate
         label: تاریخ انتشار
-        type: datetime
+        type: date
         default: now
         required: true
+        list: false
       - name: author
         label: نویسنده
         type: string
         default: علی کواری
+        list: false
       - name: category_help
         label: "💡 دسته‌بندی‌های مجاز (کپی کنید)"
         type: text
         default: "physics → فیزیک | chemistry → شیمی | biology → زیست‌شناسی | earth-astronomy → زمین و نجوم | computer-science → علوم کامپیوتر | metaphysics → علوم فرامادی"
+        list: false
       - name: category
         label: "دسته‌بندی (یکی از موارد بالا را کپی کنید)"
         type: string
         default: biology
+        list: false
       - name: image_help
         label: "🖼️ کد آمادهٔ عکس (کپی کنید)"
         type: text
         default: '<img src="https://www.alikavari.ir/images/your-image.jpg" alt="توضیح" style="max-width:100%; border-radius:8px;">'
+        list: false
       - name: image
         label: "🖼️ تصویر شاخص"
         type: string
+        list: false
       - name: excerpt
         label: خلاصه
         type: text
+        list: false
       - name: tags
         label: برچسب‌ها (با ویرگول انگلیسی جدا کنید)
         type: string
         required: false
         default: ""
+        list: false
       - name: body
         label: متن
         type: markdown
+        list: false
