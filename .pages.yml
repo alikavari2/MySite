@@ -8,6 +8,8 @@ content:
     type: collection
     path: src/data/post
     format: yaml-frontmatter
+    sort: publishDate
+    order: desc
     fields:
       - name: title
         label: عنوان
@@ -15,7 +17,7 @@ content:
         required: true
       - name: publishDate
         label: تاریخ انتشار
-        type: date
+        type: datetime
         default: now
         required: true
       - name: author
@@ -23,24 +25,34 @@ content:
         type: string
         default: علی کواری
       - name: category_help
-        label: "💡"
+        label: "💡 دسته‌بندی‌های مجاز (کپی کنید)"
         type: text
+        list: false
         default: "physics → فیزیک | chemistry → شیمی | biology → زیست‌شناسی | earth-astronomy → زمین و نجوم | computer-science → علوم کامپیوتر | metaphysics → علوم فرامادی"
       - name: category
-        label: "دسته‌بندی (یکی از موارد بالا را اینجا بچسبانید)"
+        label: "دسته‌بندی (یکی از موارد بالا را کپی کنید)"
         type: string
         default: biology
+      - name: image_help
+        label: "🖼️ کد آمادهٔ عکس (کپی کنید و نام فایل را تغییر دهید)"
+        type: text
+        list: false
+        default: '<img src="https://www.alikavari.ir/images/your-image.jpg" alt="توضیح" style="max-width:100%; border-radius:8px;">'
       - name: image
         label: "🖼️ تصویر شاخص (آدرس مستقیم عکس را وارد کنید)"
         type: string
+        list: false
       - name: excerpt
         label: خلاصه
         type: text
+        list: false
       - name: tags
         label: برچسب‌ها (با ویرگول انگلیسی جدا کنید)
         type: string
         required: false
         default: ""
+        list: false
       - name: body
         label: متن
         type: markdown
+        list: false
