@@ -11,6 +11,15 @@ import { getPermalink } from '~/utils/permalinks';
 import { findImage } from '~/utils/images';
 import { getFormattedDate } from '~/utils/utils';
 
+const categoryMap: Record<string, string> = {
+  physics: 'فیزیک',
+  chemistry: 'شیمی',
+  biology: 'زیست‌شناسی',
+  'earth-astronomy': 'زمین و نجوم',
+  'computer-science': 'علوم کامپیوتر',
+  metaphysics: 'علوم فرامادی',
+};
+
 export interface Props {
   post: Post;
 }
@@ -85,7 +94,7 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
                 {' '}
                 ·{' '}
                 <a class="hover:underline" href={getPermalink(post.category.slug, 'category')}>
-                  {post.category.title}
+                  {categoryMap[post.category.slug] || post.category.title}
                 </a>
               </>
             )
