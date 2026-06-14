@@ -95,7 +95,6 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     metadata,
 
     Content: Content,
-
     readingTime: remarkPluginFrontmatter?.readingTime,
   };
 };
