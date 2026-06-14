@@ -6,3 +6,4 @@ export const categoryMap = {
   'computer-science': 'علوم کامپیوتر',
   metaphysics: 'علوم فرامادی',
 };
+
