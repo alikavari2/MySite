@@ -1,6 +1,7 @@
 ---
 title: بررسی وضعیت آپدیت
 publishDate: 2026-06-15
+publishTime: 13:00
 author: علی کواری
 category_help: physics → فیزیک | chemistry → شیمی | biology → زیست‌شناسی |
   earth-astronomy → زمین و نجوم | computer-science → علوم کامپیوتر | metaphysics
