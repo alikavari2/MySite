@@ -58,7 +58,7 @@ const { post } = Astro.props;
             )
           }
           {
-            post.readingTime && (
+            post.readingTime > 0 && (
               <>
                 &nbsp;· <span>{post.readingTime}</span> دقیقه مطالعه
               </>
