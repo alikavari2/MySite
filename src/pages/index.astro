@@ -23,10 +23,10 @@ const publishedPosts = allPosts.filter(p => !p.data.draft);
 const getCategoryCount = (slug: string) =>
   publishedPosts.filter(p => p.data.category?.trim() === slug).length;
 
-// استخراج slug از id (حذف تاریخ و پسوند .md)
+// استخراج slug از id (حذف مسیر و پسوند، اما نگه‌داشتن تاریخ)
 const getSlug = (id: string) => {
-  // نام فایل معمولاً YYYY-MM-DD-slug.md است
-  return id.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+  // id به صورت src/data/post/2026-06-15-pst-chharm.md است
+  return id.replace(/^src\/data\/post\//, '').replace(/\.md$/, '');
 };
 
 // گرفتن ۳ پست آخر
@@ -128,7 +128,7 @@ const latestPosts = publishedPosts
           <h2 class="text-3xl font-bold text-center mb-12">📝 تازه‌ترین نوشته‌ها</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {latestPosts.map((post) => {
-              const slug = getSlug(post.id); // حذف تاریخ و پسوند
+              const slug = getSlug(post.id); // نگه‌داشتن تاریخ در slug
               const permalink = getPermalink(slug, 'post');
               return (
                 <a href={permalink} class="block bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
