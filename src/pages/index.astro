@@ -30,8 +30,9 @@ const getSlug = (id: string) => {
 };
 
 // گرفتن ۳ پست آخر
-const latestPosts = publishedPosts
+const latestPosts = [...publishedPosts]
   .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .filter(post => !post.data.draft)
   .slice(0, 3);
 ---
 
