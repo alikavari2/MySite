@@ -1,45 +1,108 @@
 ---
-// ورود با گوگل با استفاده از Google Identity Services (بدون نیاز به فیلترشکن)
+// ورود با گوگل به‌روش Redirect مستقیم (بدون کتابخانهٔ اضافی)
 ---
 
 <div id="user-login-wrapper" class="fixed top-12 left-0 z-50 m-4">
   <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col items-end gap-2">
     <p class="text-xs text-gray-600 dark:text-gray-300 mb-1">🔭 به جمع کاوشگران علم بپیوندید!</p>
-    <div class="flex items-center gap-2" id="login-buttons">
-      <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">ورود با گوگل</button>
+    <div class="flex items-center gap-2">
+      <!-- دکمهٔ ورود: یک لینک ساده به گوگل -->
+      <a id="google-signin-btn" href="#" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">ورود با گوگل</a>
       <button id="logout-btn" class="hidden bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">خروج</button>
       <span id="user-name" class="text-sm text-gray-800 dark:text-gray-200 mr-2"></span>
     </div>
   </div>
 </div>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-  window.onload = () => {
-    google.accounts.id.initialize({
-      client_id: "833755635104-co6bhmbll4gkmu9jv5chcqs08acf2mc4.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-      auto_select: false,
-    });
+  (function() {
+    const GOOGLE_CLIENT_ID = "833755635104-co6bhmbll4gkmu9jv5chcqs08acf2mc4.apps.googleusercontent.com";
+    const REDIRECT_URI = "https://alikavari.ir";
 
-    document.getElementById('google-signin-btn').addEventListener('click', () => {
-      google.accounts.id.prompt(); // shows One Tap or redirect to Google sign-in page
-    });
+    // ساختن URL ورود گوگل
+    function buildGoogleAuthUrl() {
+      const params = new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        response_type: "id_token token",
+        scope: "openid email profile",
+        nonce: Math.random().toString(36).substring(2, 15),
+        prompt: "select_account",
+      });
+      return "https://accounts.google.com/o/oauth2/v2/auth?" + params.toString();
+    }
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      google.accounts.id.disableAutoSelect();
-      // clear user info
-      document.getElementById('user-name').textContent = '';
-      document.getElementById('google-signin-btn').classList.remove('hidden');
-      document.getElementById('logout-btn').classList.add('hidden');
-    });
-  };
+    // بررسی وجود توکن در URL پس از برگشت از گوگل
+    function checkAuthResponse() {
+      const hash = window.location.hash.substring(1); // حذف #
+      if (!hash) return null;
+      const params = new URLSearchParams(hash);
+      const idToken = params.get("id_token");
+      if (idToken) {
+        // ذخیرهٔ توکن در sessionStorage
+        sessionStorage.setItem("google_id_token", idToken);
+        // پاک کردن hash از URL بدون رفرش
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+        return idToken;
+      }
+      return null;
+    }
 
-  function handleCredentialResponse(response) {
-    // decode the JWT token to get user info
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    document.getElementById('user-name').textContent = payload.name || payload.email;
-    document.getElementById('google-signin-btn').classList.add('hidden');
-    document.getElementById('logout-btn').classList.remove('hidden');
-  }
+    // رمزگشایی JWT و استخراج اطلاعات کاربر
+    function parseJWT(token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return { name: payload.name, email: payload.email };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // تنظیم UI بر اساس وضعیت کاربر
+    function setUser(user) {
+      const loginLink = document.getElementById("google-signin-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+      const userName = document.getElementById("user-name");
+      if (user) {
+        loginLink.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        userName.textContent = user.name || user.email;
+      } else {
+        loginLink.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        userName.textContent = "";
+      }
+    }
+
+    // آماده‌سازی اولیه
+    function init() {
+      // ۱. آدرس دکمهٔ ورود را تنظیم کن
+      document.getElementById("google-signin-btn").href = buildGoogleAuthUrl();
+
+      // ۲. اگر تازه از گوگل برگشته‌ایم، توکن را بررسی کن
+      const idToken = checkAuthResponse();
+      if (idToken) {
+        const user = parseJWT(idToken);
+        if (user) {
+          sessionStorage.setItem("user", JSON.stringify(user));
+          setUser(user);
+        }
+      } else {
+        // ۳. اگر کاربر از قبل وارد شده بود، از sessionStorage بخوان
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      }
+
+      // ۴. دکمهٔ خروج
+      document.getElementById("logout-btn").addEventListener("click", function() {
+        sessionStorage.removeItem("google_id_token");
+        sessionStorage.removeItem("user");
+        setUser(null);
+      });
+    }
+
+    init();
+  })();
 </script>
