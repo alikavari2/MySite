@@ -39,6 +39,7 @@ const postCollection = defineCollection({
     title: z.string(),
     excerpt: z.string().optional(),
     image: z.string().optional(),
+    publishTime: z.string().optional(),   // ← این خط اضافه شده
     category: z.string().optional(),
     tags: z.preprocess(
       (val) => (typeof val === 'string' ? val.split(',').map((s) => s.trim()).filter(Boolean) : val),
