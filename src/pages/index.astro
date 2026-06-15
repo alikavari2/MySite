@@ -4,15 +4,27 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import { headerData, footerData } from '~/navigation';
+import { getPermalink } from '~/utils/permalinks';
 
-// گرفتن خودکار پست‌ها
+const categoryMap: Record<string, string> = {
+  physics: 'فیزیک',
+  chemistry: 'شیمی',
+  biology: 'زیست‌شناسی',
+  'earth-astronomy': 'زمین و نجوم',
+  'computer-science': 'علوم کامپیوتر',
+  metaphysics: 'علوم فرامادی',
+};
+
+// دریافت همۀ پست‌ها و حذف پیش‌نویس‌ها
 const allPosts = await getCollection('post');
+const publishedPosts = allPosts.filter(p => !p.data.draft);
 
-// تابع کمکی برای محاسبه تعداد پست‌ها در هر دسته
-const getCategoryCount = (slug: string) => allPosts.filter(p => p.data.category === slug).length;
+// تابع شمارش پست‌های منتشرشده در هر دسته
+const getCategoryCount = (slug: string) =>
+  publishedPosts.filter(p => p.data.category === slug).length;
 
 // گرفتن ۳ پست آخر
-const latestPosts = allPosts
+const latestPosts = publishedPosts
   .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
   .slice(0, 3);
 ---
@@ -36,7 +48,7 @@ const latestPosts = allPosts
     <section class="max-w-7xl mx-auto px-4 pb-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- فیزیک -->
-        <a href="/category/physics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/physics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">⚛️</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-blue-400">فیزیک</h2>
           <p class="text-gray-400 mb-4">از ذرات زیراتمی تا کهکشان‌ها</p>
@@ -47,7 +59,7 @@ const latestPosts = allPosts
         </a>
 
         <!-- شیمی -->
-        <a href="/category/chemistry" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/chemistry" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">🧪</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-green-400">شیمی</h2>
           <p class="text-gray-400 mb-4">دنیای مولکول‌ها و واکنش‌ها</p>
@@ -58,7 +70,7 @@ const latestPosts = allPosts
         </a>
 
         <!-- زیست‌شناسی -->
-        <a href="/category/biology" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/biology" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">🧬</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-emerald-400">زیست‌شناسی</h2>
           <p class="text-gray-400 mb-4">رمز و راز حیات</p>
@@ -69,7 +81,7 @@ const latestPosts = allPosts
         </a>
 
         <!-- نجوم -->
-        <a href="/category/earth-astronomy" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/earth-astronomy" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">🌍</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-yellow-400">زمین و نجوم</h2>
           <p class="text-gray-400 mb-4">از اعماق زمین تا کرانه‌های کیهان</p>
@@ -80,7 +92,7 @@ const latestPosts = allPosts
         </a>
 
         <!-- کامپیوتر -->
-        <a href="/category/computer-science" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/computer-science" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">💻</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-cyan-400">علوم کامپیوتر</h2>
           <p class="text-gray-400 mb-4">منطق، کد و دنیای دیجیتال</p>
@@ -91,7 +103,7 @@ const latestPosts = allPosts
         </a>
 
         <!-- علوم فرامادی -->
-        <a href="/category/metaphysics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
+        <a href="/category/metaphysics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
           <div class="text-6xl mb-4">🔮</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-purple-400">علوم فرامادی</h2>
           <p class="text-gray-400 mb-4">مرزهای ناشناختهٔ دانش</p>
@@ -104,21 +116,25 @@ const latestPosts = allPosts
     </section>
 
     <!-- جدیدترین نوشته‌ها -->
-    <section class="max-w-7xl mx-auto px-4 pb-20">
-      <h2 class="text-3xl font-bold text-center mb-12">📝 تازه‌ترین نوشته‌ها</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {latestPosts.map((post) => (
-          <a href={`/blog/${post.slug}`} class="block bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
-            <h3 class="text-lg font-semibold mb-2">{post.data.title}</h3>
-            <p class="text-gray-400 text-sm mb-3">{post.data.excerpt?.slice(0, 80)}...</p>
-            <div class="flex justify-between text-xs text-gray-500">
-              <span>{new Date(post.data.publishDate).toLocaleDateString('fa-IR')}</span>
-              <span>{post.data.category}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
+    {
+      latestPosts.length > 0 && (
+        <section class="max-w-7xl mx-auto px-4 pb-20">
+          <h2 class="text-3xl font-bold text-center mb-12">📝 تازه‌ترین نوشته‌ها</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {latestPosts.map((post) => (
+              <a href={getPermalink(post.slug, 'post')} class="block bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                <h3 class="text-lg font-semibold mb-2">{post.data.title}</h3>
+                <p class="text-gray-400 text-sm mb-3">{post.data.excerpt?.slice(0, 80)}...</p>
+                <div class="flex justify-between text-xs text-gray-500">
+                  <span>{new Date(post.data.publishDate).toLocaleDateString('fa-IR')}</span>
+                  <span>{categoryMap[post.data.category] || post.data.category}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
   </main>
 
   <Footer {...footerData} />
