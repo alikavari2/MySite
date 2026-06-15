@@ -1,65 +1,81 @@
 ---
-// کامپوننت ورود و خروج کاربران
+// کامپوننت ورود/خروج با ظاهر جدید
 ---
-<div id="user-login" class="flex items-center gap-2 text-white">
-  <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">ورود با گوگل</button>
-  <button id="email-signin-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm">ورود با ایمیل</button>
-  <button id="logout-btn" class="hidden bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">خروج</button>
-  <span id="user-name" class="text-sm mr-2"></span>
+
+<div id="user-login-wrapper" class="fixed top-0 left-0 z-50 m-4">
+  <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col items-end gap-2">
+    <p class="text-xs text-gray-600 dark:text-gray-300 mb-1">🔭 به جمع کاوشگران علم بپیوندید!</p>
+    <div class="flex items-center gap-2">
+      <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">Google</button>
+      <button id="email-signin-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">ایمیل</button>
+      <button id="logout-btn" class="hidden bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">خروج</button>
+      <span id="user-name" class="text-sm text-gray-800 dark:text-gray-200 mr-2"></span>
+    </div>
+  </div>
 </div>
 
 <script>
-  import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+  (function() {
+    // تابع کمکی برای صبر کردن تا Firebase Auth آماده شود
+    function waitForAuth(cb) {
+      if (window.firebaseAuth) {
+        cb(window.firebaseAuth);
+      } else {
+        setTimeout(() => waitForAuth(cb), 150);
+      }
+    }
 
-  const auth = window.firebaseAuth;
-  if (!auth) throw new Error('Firebase auth not initialized');
+    waitForAuth(function(auth) {
+      import("https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js")
+        .then(({ GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword }) => {
+          
+          const provider = new GoogleAuthProvider();
 
-  const provider = new GoogleAuthProvider();
+          document.getElementById('google-signin-btn').addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(err => alert('خطا: ' + err.message));
+          });
 
-  document.getElementById('google-signin-btn').addEventListener('click', () => {
-    signInWithPopup(auth, provider).catch((error) => alert('خطا در ورود: ' + error.message));
-  });
+          document.getElementById('email-signin-btn').addEventListener('click', () => {
+            const email = prompt('📧 ایمیل خود را وارد کنید:');
+            if (!email) return;
+            const password = prompt('🔑 رمز عبور (حداقل ۶ کاراکتر):');
+            if (!password) return;
 
-  document.getElementById('email-signin-btn').addEventListener('click', () => {
-    const email = prompt('لطفاً ایمیل خود را وارد کنید:');
-    if (!email) return;
-    const password = prompt('لطفاً رمز عبور خود را وارد کنید (حداقل ۶ کاراکتر):');
-    if (!password) return;
+            signInWithEmailAndPassword(auth, email, password)
+              .catch(err => {
+                if (err.code === 'auth/user-not-found') {
+                  if (confirm('این ایمیل ثبت نشده. می‌خواهید حساب جدید بسازید؟')) {
+                    createUserWithEmailAndPassword(auth, email, password).catch(e => alert('خطا: ' + e.message));
+                  }
+                } else {
+                  alert('خطا: ' + err.message);
+                }
+              });
+          });
 
-    import("https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js")
-      .then(({ signInWithEmailAndPassword, createUserWithEmailAndPassword }) => {
-        signInWithEmailAndPassword(auth, email, password)
-          .catch((error) => {
-            if (error.code === 'auth/user-not-found') {
-              if (confirm('این ایمیل ثبت نشده است. آیا مایل به ایجاد حساب جدید هستید؟')) {
-                createUserWithEmailAndPassword(auth, email, password).catch((e) => alert('خطا: ' + e.message));
-              }
+          document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth);
+          });
+
+          onAuthStateChanged(auth, (user) => {
+            const googleBtn = document.getElementById('google-signin-btn');
+            const emailBtn = document.getElementById('email-signin-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userName = document.getElementById('user-name');
+            if (user) {
+              googleBtn.classList.add('hidden');
+              emailBtn.classList.add('hidden');
+              logoutBtn.classList.remove('hidden');
+              userName.textContent = user.displayName || user.email;
             } else {
-              alert('خطا: ' + error.message);
+              googleBtn.classList.remove('hidden');
+              emailBtn.classList.remove('hidden');
+              logoutBtn.classList.add('hidden');
+              userName.textContent = '';
             }
           });
-      });
-  });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    signOut(auth);
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    const googleBtn = document.getElementById('google-signin-btn');
-    const emailBtn = document.getElementById('email-signin-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const userName = document.getElementById('user-name');
-    if (user) {
-      googleBtn.classList.add('hidden');
-      emailBtn.classList.add('hidden');
-      logoutBtn.classList.remove('hidden');
-      userName.textContent = user.displayName || user.email;
-    } else {
-      googleBtn.classList.remove('hidden');
-      emailBtn.classList.remove('hidden');
-      logoutBtn.classList.add('hidden');
-      userName.textContent = '';
-    }
-  });
+        });
+    });
+  })();
 </script>
