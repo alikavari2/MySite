@@ -1,8 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import { headerData, footerData } from '~/navigation';
+
+// گرفتن خودکار پست‌ها
+const allPosts = await getCollection('post');
+
+// تابع کمکی برای محاسبه تعداد پست‌ها در هر دسته
+const getCategoryCount = (slug: string) => allPosts.filter(p => p.data.category === slug).length;
+
+// گرفتن ۳ پست آخر
+const latestPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
 ---
 
 <Layout metadata={{ title: 'آزمایشگاه دیجیتال علی کواری' }}>
@@ -24,52 +36,87 @@ import { headerData, footerData } from '~/navigation';
     <section class="max-w-7xl mx-auto px-4 pb-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- فیزیک -->
-        <a href="/category/physics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/physics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">⚛️</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-blue-400">فیزیک</h2>
           <p class="text-gray-400 mb-4">از ذرات زیراتمی تا کهکشان‌ها</p>
-          <span class="text-blue-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-blue-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('physics')} پست</span>
+          </div>
         </a>
 
         <!-- شیمی -->
-        <a href="/category/chemistry" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/chemistry" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">🧪</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-green-400">شیمی</h2>
           <p class="text-gray-400 mb-4">دنیای مولکول‌ها و واکنش‌ها</p>
-          <span class="text-green-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-green-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('chemistry')} پست</span>
+          </div>
         </a>
 
         <!-- زیست‌شناسی -->
-        <a href="/category/biology" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/biology" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">🧬</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-emerald-400">زیست‌شناسی</h2>
           <p class="text-gray-400 mb-4">رمز و راز حیات</p>
-          <span class="text-emerald-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-emerald-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('biology')} پست</span>
+          </div>
         </a>
 
         <!-- نجوم -->
-        <a href="/category/earth-astronomy" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/earth-astronomy" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">🌍</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-yellow-400">زمین و نجوم</h2>
           <p class="text-gray-400 mb-4">از اعماق زمین تا کرانه‌های کیهان</p>
-          <span class="text-yellow-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-yellow-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('earth-astronomy')} پست</span>
+          </div>
         </a>
 
         <!-- کامپیوتر -->
-        <a href="/category/computer-science" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/computer-science" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">💻</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-cyan-400">علوم کامپیوتر</h2>
           <p class="text-gray-400 mb-4">منطق، کد و دنیای دیجیتال</p>
-          <span class="text-cyan-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-cyan-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('computer-science')} پست</span>
+          </div>
         </a>
 
         <!-- علوم فرامادی -->
-        <a href="/category/metaphysics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+        <a href="/category/metaphysics" class="group block bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 relative">
           <div class="text-6xl mb-4">🔮</div>
           <h2 class="text-2xl font-bold mb-2 group-hover:text-purple-400">علوم فرامادی</h2>
           <p class="text-gray-400 mb-4">مرزهای ناشناختهٔ دانش</p>
-          <span class="text-purple-400 group-hover:underline">کاوش کنید →</span>
+          <div class="flex justify-between items-center">
+            <span class="text-purple-400 group-hover:underline">کاوش کنید →</span>
+            <span class="text-xs bg-white/10 px-2 py-1 rounded-full">{getCategoryCount('metaphysics')} پست</span>
+          </div>
         </a>
+      </div>
+    </section>
+
+    <!-- جدیدترین نوشته‌ها -->
+    <section class="max-w-7xl mx-auto px-4 pb-20">
+      <h2 class="text-3xl font-bold text-center mb-12">📝 تازه‌ترین نوشته‌ها</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {latestPosts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="block bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300">
+            <h3 class="text-lg font-semibold mb-2">{post.data.title}</h3>
+            <p class="text-gray-400 text-sm mb-3">{post.data.excerpt?.slice(0, 80)}...</p>
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>{new Date(post.data.publishDate).toLocaleDateString('fa-IR')}</span>
+              <span>{post.data.category}</span>
+            </div>
+          </a>
+        ))}
       </div>
     </section>
   </main>
