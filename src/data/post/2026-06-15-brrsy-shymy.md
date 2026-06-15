@@ -1,6 +1,7 @@
 ---
 title: بررسی شیمی
 publishDate: 2026-06-15
+publishTime: 12:20
 author: علی کواری
 category_help: physics → فیزیک | chemistry → شیمی | biology → زیست‌شناسی |
   earth-astronomy → زمین و نجوم | computer-science → علوم کامپیوتر | metaphysics
