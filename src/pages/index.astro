@@ -31,8 +31,15 @@ const getSlug = (id: string) => {
 
 // گرفتن ۳ پست آخر
 const latestPosts = [...publishedPosts]
-  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
-  .filter(post => !post.data.draft)
+  .sort((a, b) => {
+    const dateA = new Date(a.data.publishDate);
+    const dateB = new Date(b.data.publishDate);
+    const timeA = a.data.publishTime || '12:00';
+    const timeB = b.data.publishTime || '12:00';
+    const fullA = new Date(`${dateA.toISOString().split('T')[0]}T${timeA}:00`);
+    const fullB = new Date(`${dateB.toISOString().split('T')[0]}T${timeB}:00`);
+    return fullB.getTime() - fullA.getTime();
+  })
   .slice(0, 3);
 ---
 
