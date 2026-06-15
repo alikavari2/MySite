@@ -1,0 +1,65 @@
+---
+// کامپوننت ورود و خروج کاربران
+---
+<div id="user-login" class="flex items-center gap-2 text-white">
+  <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">ورود با گوگل</button>
+  <button id="email-signin-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm">ورود با ایمیل</button>
+  <button id="logout-btn" class="hidden bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">خروج</button>
+  <span id="user-name" class="text-sm mr-2"></span>
+</div>
+
+<script>
+  import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+  const auth = window.firebaseAuth;
+  if (!auth) throw new Error('Firebase auth not initialized');
+
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById('google-signin-btn').addEventListener('click', () => {
+    signInWithPopup(auth, provider).catch((error) => alert('خطا در ورود: ' + error.message));
+  });
+
+  document.getElementById('email-signin-btn').addEventListener('click', () => {
+    const email = prompt('لطفاً ایمیل خود را وارد کنید:');
+    if (!email) return;
+    const password = prompt('لطفاً رمز عبور خود را وارد کنید (حداقل ۶ کاراکتر):');
+    if (!password) return;
+
+    import("https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js")
+      .then(({ signInWithEmailAndPassword, createUserWithEmailAndPassword }) => {
+        signInWithEmailAndPassword(auth, email, password)
+          .catch((error) => {
+            if (error.code === 'auth/user-not-found') {
+              if (confirm('این ایمیل ثبت نشده است. آیا مایل به ایجاد حساب جدید هستید؟')) {
+                createUserWithEmailAndPassword(auth, email, password).catch((e) => alert('خطا: ' + e.message));
+              }
+            } else {
+              alert('خطا: ' + error.message);
+            }
+          });
+      });
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    signOut(auth);
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    const googleBtn = document.getElementById('google-signin-btn');
+    const emailBtn = document.getElementById('email-signin-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userName = document.getElementById('user-name');
+    if (user) {
+      googleBtn.classList.add('hidden');
+      emailBtn.classList.add('hidden');
+      logoutBtn.classList.remove('hidden');
+      userName.textContent = user.displayName || user.email;
+    } else {
+      googleBtn.classList.remove('hidden');
+      emailBtn.classList.remove('hidden');
+      logoutBtn.classList.add('hidden');
+      userName.textContent = '';
+    }
+  });
+</script>
