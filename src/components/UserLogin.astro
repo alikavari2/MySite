@@ -1,0 +1,45 @@
+---
+// ورود با گوگل با استفاده از Google Identity Services (بدون نیاز به فیلترشکن)
+---
+
+<div id="user-login-wrapper" class="fixed top-12 left-0 z-50 m-4">
+  <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col items-end gap-2">
+    <p class="text-xs text-gray-600 dark:text-gray-300 mb-1">🔭 به جمع کاوشگران علم بپیوندید!</p>
+    <div class="flex items-center gap-2" id="login-buttons">
+      <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">ورود با گوگل</button>
+      <button id="logout-btn" class="hidden bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow transition">خروج</button>
+      <span id="user-name" class="text-sm text-gray-800 dark:text-gray-200 mr-2"></span>
+    </div>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+  window.onload = () => {
+    google.accounts.id.initialize({
+      client_id: "833755635104-co6bhmbll4gkmu9jv5chcqs08acf2mc4.apps.googleusercontent.com",
+      callback: handleCredentialResponse,
+      auto_select: false,
+    });
+
+    document.getElementById('google-signin-btn').addEventListener('click', () => {
+      google.accounts.id.prompt(); // shows One Tap or redirect to Google sign-in page
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      google.accounts.id.disableAutoSelect();
+      // clear user info
+      document.getElementById('user-name').textContent = '';
+      document.getElementById('google-signin-btn').classList.remove('hidden');
+      document.getElementById('logout-btn').classList.add('hidden');
+    });
+  };
+
+  function handleCredentialResponse(response) {
+    // decode the JWT token to get user info
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    document.getElementById('user-name').textContent = payload.name || payload.email;
+    document.getElementById('google-signin-btn').classList.add('hidden');
+    document.getElementById('logout-btn').classList.remove('hidden');
+  }
+</script>
