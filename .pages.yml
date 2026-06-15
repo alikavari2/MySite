@@ -18,9 +18,15 @@ content:
         required: true
       - name: publishDate
         label: تاریخ انتشار
-        type: datetime
+        type: date
         default: now
         required: true
+        list: false
+      - name: publishTime
+        label: ساعت انتشار
+        type: string
+        default: "12:00"
+        required: false
         list: false
       - name: author
         label: نویسنده
